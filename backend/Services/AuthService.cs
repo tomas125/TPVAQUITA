@@ -36,7 +36,7 @@ namespace Vaquita.Api.Services
             {
                 UsuarioId = usuario.Id,
                 Token = token,
-                Expira = DateTime.UtcNow.AddMinutes(15)
+                Expira = DateTime.UtcNow.AddHours(1)
             });
             await context.SaveChangesAsync();
 
@@ -45,7 +45,7 @@ namespace Vaquita.Api.Services
             await email.Enviar(usuario.Email, "Ingresá a Vaquita",
                 $"<p>¡Hola {usuario.Nombre}!</p>" +
                 $"<p><a href=\"{link}\">Hacé click acá para ingresar a Vaquita</a></p>" +
-                $"<p>El link vence en 15 minutos.</p>");
+                $"<p>El link vence en 1 hora.</p>");
 
             // Sin SMTP configurado (desarrollo) se devuelve el link para mostrarlo en el front
             var sinSmtp = string.IsNullOrWhiteSpace(configuration["Smtp:Host"]) || string.IsNullOrWhiteSpace(configuration["Smtp:Password"]);

@@ -42,37 +42,27 @@ y editá `VITE_API_URL`.
 
 ## Configuración del mail
 
-**Sin configurar nada** (`Smtp:Host` vacío) el backend **no envía mails**: imprime el contenido en la
-consola donde corre `dotnet run`. Para ingresar, copiá el link `http://localhost:5173/verificar?token=...`
-de la consola y abrilo en el navegador. Es el modo normal para desarrollo y para probar.
+Los datos del mail van en `backend/appsettings.Local.json` (está en `.gitignore`, **no se sube a GitHub**):
 
-### Mail real con Gmail (opcional)
-
-1. En la cuenta de Google activá la **verificación en dos pasos**.
-2. Entrá a <https://myaccount.google.com/apppasswords> y generá una **contraseña de aplicación** (16 caracteres).
-3. Configurá el SMTP:
-
-| Clave | Valor |
-|---|---|
-| `Smtp:Host` | `smtp.gmail.com` |
-| `Smtp:Port` | `587` |
-| `Smtp:User` | tu cuenta, ej. `tucuenta@gmail.com` |
-| `Smtp:Password` | la contraseña de aplicación |
-| `Smtp:From` | tu cuenta (Gmail rechaza otros remitentes) |
-
-**No escribas la contraseña en `appsettings.json` ni la subas a git.** Usá variables de entorno
-(en CMD, antes de `dotnet run`, en la misma ventana):
-
-```cmd
-set Smtp__Host=smtp.gmail.com
-set Smtp__Port=587
-set Smtp__User=tucuenta@gmail.com
-set Smtp__Password=abcdefghijklmnop
-set Smtp__From=tucuenta@gmail.com
-dotnet run
+```json
+{
+  "Smtp": {
+    "Host": "smtp.gmail.com",
+    "Port": 587,
+    "User": "tucuenta@gmail.com",
+    "Password": "contraseña de aplicación de 16 letras, sin espacios",
+    "From": "tucuenta@gmail.com"
+  }
+}
 ```
 
-Si el mail no llega, revisá spam y que la contraseña de aplicación esté sin espacios.
+- La contraseña de aplicación se genera en <https://myaccount.google.com/apppasswords> (requiere verificación en dos pasos).
+- El mail le llega a **cualquier** usuario registrado; la cuenta configurada es solo el remitente.
+- El link de ingreso es de **un solo uso** y vence en **1 hora**.
+
+**Modo desarrollo:** si no hay `Host` o `Password`, el backend no envía el mail: lo muestra en la consola
+y el front muestra un botón **"Ingresar (modo desarrollo)"**. No copies el link de la consola con Ctrl+C
+(apaga el backend): usá Ctrl+click o el botón del front.
 
 ## Prueba de punta a punta
 
