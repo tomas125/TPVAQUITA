@@ -49,7 +49,8 @@ namespace Vaquita.Api.Controllers
         {
             var grupo = await servicio.ObtenerPorId(id);
             if (grupo is null) return NotFound();
-            if (grupo.AdminId != User.ObtenerUsuarioId()) return Forbid();   // 403
+            if (grupo.AdminId != User.ObtenerUsuarioId())
+                return StatusCode(403, new { mensaje = "Solo el administrador del grupo puede invitar por mail. Compartí el QR." });
 
             await servicio.Invitar(id, dto);
             return NoContent();

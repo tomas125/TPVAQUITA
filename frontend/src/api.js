@@ -28,6 +28,7 @@ export const moneda = (valor) =>
 
 // Mensaje de error que manda la API
 export const textoError = (error) => {
+  if (error.response?.data?.mensaje) return error.response.data.mensaje
   if (error.response?.status === 403) return 'No tenés permiso para hacer esto'
   return error.response?.data?.mensaje ?? error.response?.data?.title ?? 'Ocurrió un error'
 }
