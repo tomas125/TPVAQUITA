@@ -6,6 +6,7 @@ export default function Registro() {
   const [form, setForm] = useState({ apellido: '', nombre: '', apodo: '', email: '' })
   const [mensaje, setMensaje] = useState('')
   const [error, setError] = useState('')
+  const [link, setLink] = useState('')
 
   const cambiar = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
@@ -13,7 +14,8 @@ export default function Registro() {
     e.preventDefault()
     setError('')
     try {
-      await api.post('/auth/registro', form)
+      const { data } = await api.post('/auth/registro', form)
+      setLink(data.link ?? '')
       setMensaje('Te enviamos un mail con el link para ingresar')
     } catch (err) {
       setError(textoError(err))
@@ -30,6 +32,7 @@ export default function Registro() {
         <input name="email" type="email" placeholder="Email" value={form.email} onChange={cambiar} required />
         {error && <p className="error">{error}</p>}
         {mensaje && <p className="exito">{mensaje}</p>}
+        {link && <a className="boton" href={link}>Ingresar (modo desarrollo)</a>}
         <button className="boton">Registrarme</button>
         <Link to="/login">Ya tengo cuenta</Link>
       </form>

@@ -480,3 +480,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Datos privados (contraseña del mail)
+appsettings.Local.json

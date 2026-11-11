@@ -4,7 +4,7 @@ namespace Vaquita.Api.Services
 {
     public interface IAuthService
     {
-        Task SolicitarLink(string email);
+        Task<string?> SolicitarLink(string email);   // devuelve el link solo en desarrollo (sin SMTP)
         Task<RespuestaAutenticacionDto> Verificar(string token);
     }
 }

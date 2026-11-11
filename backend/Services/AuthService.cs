@@ -24,7 +24,7 @@ namespace Vaquita.Api.Services
         }
 
         // 1) Genera un token de un solo uso y manda el link por mail
-        public async Task SolicitarLink(string emailUsuario)
+        public async Task<string?> SolicitarLink(string emailUsuario)
         {
             var usuario = await context.Usuarios.FirstOrDefaultAsync(u => u.Email == emailUsuario);
             if (usuario is null)
@@ -46,6 +46,10 @@ namespace Vaquita.Api.Services
                 $"<p>¡Hola {usuario.Nombre}!</p>" +
                 $"<p><a href=\"{link}\">Hacé click acá para ingresar a Vaquita</a></p>" +
                 $"<p>El link vence en 15 minutos.</p>");
+
+            // Sin SMTP configurado (desarrollo) se devuelve el link para mostrarlo en el front
+            var sinSmtp = string.IsNullOrWhiteSpace(configuration["Smtp:Host"]) || string.IsNullOrWhiteSpace(configuration["Smtp:Password"]);
+            return sinSmtp ? link : null;
         }
 
         // 2) Valida el token del link y devuelve el JWT

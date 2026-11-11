@@ -23,16 +23,16 @@ namespace Vaquita.Api.Controllers
         public async Task<ActionResult> Registro(UsuarioCreacionDto dto)
         {
             await usuarios.Registrar(dto);
-            await auth.SolicitarLink(dto.Email);
-            return Ok(new { mensaje = "Te enviamos un mail con el link para ingresar" });
+            var link = await auth.SolicitarLink(dto.Email);
+            return Ok(new { mensaje = "Te enviamos un mail con el link para ingresar", link });
         }
 
         /// <summary>Pide un link de ingreso por mail.</summary>
         [HttpPost("login")]
         public async Task<ActionResult> Login(SolicitarLinkDto dto)
         {
-            await auth.SolicitarLink(dto.Email);
-            return Ok(new { mensaje = "Te enviamos un mail con el link para ingresar" });
+            var link = await auth.SolicitarLink(dto.Email);
+            return Ok(new { mensaje = "Te enviamos un mail con el link para ingresar", link });
         }
 
         /// <summary>Valida el token del link y devuelve el JWT.</summary>

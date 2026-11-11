@@ -9,6 +9,9 @@ using Vaquita.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Datos privados (contraseña del mail): archivo local que NO se sube a GitHub
+builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true);
+
 // ===== 1) Servicios =====
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>

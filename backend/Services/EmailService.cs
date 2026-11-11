@@ -20,7 +20,7 @@ namespace Vaquita.Api.Services
             var host = configuration["Smtp:Host"];
 
             // Sin SMTP configurado: se muestra el mail en la consola (modo desarrollo)
-            if (string.IsNullOrWhiteSpace(host))
+            if (string.IsNullOrWhiteSpace(host) || string.IsNullOrWhiteSpace(configuration["Smtp:Password"]))
             {
                 logger.LogWarning("📧 MAIL (no enviado, SMTP sin configurar)\nPara: {Para}\nAsunto: {Asunto}\n{Html}", para, asunto, html);
                 return;
