@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import api, { textoError } from '../api'
+import { Aviso, Espera } from '../components/Estados'
 
 // Destino del QR y del mail de invitación
 export default function Unirse() {
@@ -14,5 +15,20 @@ export default function Unirse() {
       .catch((err) => setError(textoError(err)))
   }, [id])
 
-  return error ? <p className="error">{error}</p> : <p className="centrado">Uniéndote al grupo…</p>
+  return (
+    <section className="pagina-centro">
+      {error ? (
+        <div className="panel panel--angosto">
+          <h1 className="form-titulo">No pudiste unirte al grupo</h1>
+          <Aviso>{error}</Aviso>
+          <Link to="/" className="boton boton--secundario">Ir a mis grupos</Link>
+        </div>
+      ) : (
+        <>
+          <h1 className="sr-only">Uniéndote al grupo</h1>
+          <Espera texto="Uniéndote al grupo…" />
+        </>
+      )}
+    </section>
+  )
 }

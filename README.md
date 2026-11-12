@@ -24,7 +24,28 @@ dotnet run                    # API en http://localhost:5054 (Swagger en /swagge
 ```
 
 La conexión está en `backend/appsettings.json` (`ConnectionStrings:DefaultConnection`,
-por defecto `Server=localhost;Database=VaquitaDb;Trusted_Connection=True`). Ajustala si tu SQL Server es otro.
+por defecto `Server=localhost;Database=VaquitaDb;Trusted_Connection=True`). Esa cadena sirve si SQL Server
+está instalado como **instancia por defecto**.
+
+#### Si usás SQL Server Express (instancia con nombre)
+
+Si al levantar el backend aparece un `SqlException` con **`Error Number:2`** ("no se encontró el servidor"),
+lo más probable es que tu SQL Server esté instalado como instancia con nombre (`localhost\SQLEXPRESS`),
+que es lo que pasa con la instalación típica de Express. Para saber cuál tenés, buscá en `services.msc` el servicio
+`SQL Server (...)`: si dice `(MSSQLSERVER)` es la instancia por defecto; si dice `(SQLEXPRESS)`, es la con nombre.
+
+**No cambies `appsettings.json`**: se sube al repo y le rompería la conexión a quien use la instancia por defecto.
+Configurá tu cadena con *user secrets*, que se guardan solo en tu PC (fuera del proyecto) y en modo Development
+pisan el valor de `appsettings.json`:
+
+```powershell
+cd backend
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=localhost\SQLEXPRESS;Database=VaquitaDb;Trusted_Connection=True;TrustServerCertificate=True"
+dotnet user-secrets list      # para comprobar que quedó guardada
+```
+
+Después corré `dotnet ef database update` y `dotnet run` como siempre. Para volver a usar la cadena del repo:
+`dotnet user-secrets remove "ConnectionStrings:DefaultConnection"`.
 
 ### 2. Frontend
 

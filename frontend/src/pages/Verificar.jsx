@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import api, { textoError } from '../api'
+import AuthMarco from '../components/AuthMarco'
+import { Aviso, Espera } from '../components/Estados'
 
 // El link del mail trae ?token=... → se canjea por el JWT
 export default function Verificar() {
@@ -20,10 +22,22 @@ export default function Verificar() {
   }, [])
 
   return (
-    <div className="auth">
-      <div className="auth-tarjeta">
-        {error ? <><p className="error">{error}</p><Link to="/login">Pedir otro link</Link></> : <p>Ingresando…</p>}
+    <AuthMarco expresion="pensando">
+      <div className="formulario auth-form">
+        {error ? (
+          <>
+            <h1 className="form-titulo">No pudimos ingresarte</h1>
+            <Aviso>{error}</Aviso>
+            <p className="form-bajada">El link es de un solo uso y vence en una hora.</p>
+            <Link to="/login" className="boton boton--primario boton--grande">Pedir otro link</Link>
+          </>
+        ) : (
+          <>
+            <h1 className="sr-only">Ingresando</h1>
+            <Espera texto="Revisando tu link…" />
+          </>
+        )}
       </div>
-    </div>
+    </AuthMarco>
   )
 }

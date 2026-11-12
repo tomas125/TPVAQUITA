@@ -1,4 +1,4 @@
-import { BrowserRouter, Link, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Registro from './pages/Registro'
 import Login from './pages/Login'
 import Verificar from './pages/Verificar'
@@ -8,6 +8,7 @@ import GastoNuevo from './pages/GastoNuevo'
 import Saldos from './pages/Saldos'
 import Invitar from './pages/Invitar'
 import Unirse from './pages/Unirse'
+import Encabezado from './components/Encabezado'
 
 // Páginas que necesitan sesión: si no hay token, va al login
 function Privada({ children }) {
@@ -25,16 +26,19 @@ function Privada({ children }) {
   }
 
   return (
-    <>
-      <header className="encabezado">
-        <Link to="/" className="marca">🐮 Vaquita</Link>
-        <div className="encabezado-usuario">
-          <Link to="/grupos/nuevo" className="boton boton-chico boton-secundario">+ Grupo</Link>
-          <button className="boton boton-chico boton-secundario" onClick={salir}>Salir</button>
-        </div>
-      </header>
-      <main className="contenedor">{children}</main>
-    </>
+    <div className="app">
+      <a href="#contenido" className="saltar">Saltar al contenido</a>
+      <Encabezado onSalir={salir} />
+      <main id="contenido" className="contenedor" tabIndex="-1">
+        {/* La key reinicia la animación de entrada al cambiar de pantalla; los ids se ignoran
+            para que pasar de un grupo a otro no remonte la vista ni vuelva a mostrar el esqueleto */}
+        <div key={location.pathname.replace(/\d+/g, ':n')} className="pantalla">{children}</div>
+      </main>
+      <footer className="pie-app">
+        <span className="pie-marca" translate="no">RATIFY</span>
+        <span>Ni un peso más, ni un peso menos.</span>
+      </footer>
+    </div>
   )
 }
 
